@@ -20,20 +20,14 @@ public class RedisConfig {
     /**
      * Redis 서비스에 연결하기 위한 속성을 설정 <br>
      * RedisProperties 객체를 생성하고 설정한 속성을 포함하여 반환
-     * @param secretKeyManagerService 시크릿 키 매니저 서비스
-     * @param secretKeyProperties 시크릿 키 속성
      * @return RedisProperties
      * @author Yujin-nKim(김유진)
      */
-    @Bean
-    public RedisProperties redisProperties(SecretKeyManagerService secretKeyManagerService,
-                                           SecretKeyProperties secretKeyProperties) {
-        return RedisProperties.builder()
-                .redisServerIpAddress(secretKeyManagerService.getSecretValue(secretKeyProperties.getRedisServerIpAddressKeyId()))
-                .redisServerPort(secretKeyManagerService.getSecretValue(secretKeyProperties.getRedisServerPortKeyId()))
-                .redisServerPassword(secretKeyManagerService.getSecretValue(secretKeyProperties.getRedisServerPasswordKeyId()))
-                .redisDatabase(21)
-                .build();
+
+    private final RedisProperties redisProperties;
+
+    public RedisConfig(RedisProperties redisProperties) {
+        this.redisProperties = redisProperties;
     }
 
     /**
@@ -43,12 +37,12 @@ public class RedisConfig {
      * @author Yujin-nKim(김유진)
      */
     @Bean
-    public RedisConnectionFactory redisConnectionFactory(RedisProperties redisProperties) {
+    public RedisConnectionFactory redisConnectionFactory() {
         RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
-        redisStandaloneConfiguration.setHostName(redisProperties.getRedisServerIpAddress());
-        redisStandaloneConfiguration.setPort(Integer.parseInt(redisProperties.getRedisServerPort()));
-        redisStandaloneConfiguration.setPassword(redisProperties.getRedisServerPassword());
-        redisStandaloneConfiguration.setDatabase(redisProperties.getRedisDatabase());
+        redisStandaloneConfiguration.setHostName(redisProperties.getServerIpAddress());
+        redisStandaloneConfiguration.setPort(Integer.parseInt(redisProperties.getServerPort()));
+        redisStandaloneConfiguration.setPassword(redisProperties.getServerPassword());
+        redisStandaloneConfiguration.setDatabase(redisProperties.getDatabase());
         return new LettuceConnectionFactory(redisStandaloneConfiguration);
     }
 
@@ -59,9 +53,9 @@ public class RedisConfig {
      * @author Yujin-nKim(김유진)
      */
     @Bean
-    public RedisTemplate<String, String> redisTemplate(RedisProperties redisProperties) {
+    public RedisTemplate<String, String> redisTemplate() {
         RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(redisConnectionFactory(redisProperties));
+        redisTemplate.setConnectionFactory(redisConnectionFactory());
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(new StringRedisSerializer());
         return redisTemplate;

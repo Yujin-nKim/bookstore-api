@@ -3,11 +3,13 @@ package com.t3t.bookstoreapi.certcode.controller;
 import com.t3t.bookstoreapi.certcode.service.CertCodeService;
 import com.t3t.bookstoreapi.model.response.BaseResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@ConditionalOnProperty(name = "feature.enabled", havingValue = "true", matchIfMissing = false)
 public class CertCodeController {
 
     private final CertCodeService certCodeService;

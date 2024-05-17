@@ -3,6 +3,7 @@ package com.t3t.bookstoreapi.config;
 import com.t3t.bookstoreapi.keymanager.service.SecretKeyManagerService;
 import com.t3t.bookstoreapi.property.ObjectStorageProperties;
 import com.t3t.bookstoreapi.property.SecretKeyProperties;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,20 +16,23 @@ public class ObjectStoragePropertiesConfig {
 
     /**
      * Object Storage 연결에 필요한 속성을 ObjectStorageProperties 객체에 설정하고 반환
-     * @param secretKeyManagerService 시크릿 키 매니저 서비스
-     * @param secretKeyProperties 시크릿 키 속성
      * @return Object Storage 연결에 필요한 속성이 정의된 객체 ObjectStorageProperties
      * @author Yujin-nKim(김유진)
      */
     @Bean
-    public ObjectStorageProperties objectStorageProperties(SecretKeyManagerService secretKeyManagerService,
-                                                           SecretKeyProperties secretKeyProperties) {
+    public ObjectStorageProperties localObjectStorageProperties(
+            @Value("${object-storage.storage-url}") String storageUrl,
+            @Value("${object-storage.auth-url}") String authUrl,
+            @Value("${object-storage.tenant-id}") String tenantId,
+            @Value("${object-storage.user-name}") String userName,
+            @Value("${object-storage.password}") String password) {
         return ObjectStorageProperties.builder()
-                .storageUrl(secretKeyManagerService.getSecretValue(secretKeyProperties.getObjectStorageUrlKeyId()))
-                .authUrl(secretKeyManagerService.getSecretValue(secretKeyProperties.getObjectStorageAuthUrlKeyId()))
-                .tenantId(secretKeyManagerService.getSecretValue(secretKeyProperties.getObjectStorageTenantIdKeyId()))
-                .userName(secretKeyManagerService.getSecretValue(secretKeyProperties.getObjectStorageUserNameKeyId()))
-                .password(secretKeyManagerService.getSecretValue(secretKeyProperties.getObjectStoragePasswordKeyId()))
+                .storageUrl(storageUrl)
+                .authUrl(authUrl)
+                .tenantId(tenantId)
+                .userName(userName)
+                .password(password)
                 .build();
     }
+
 }

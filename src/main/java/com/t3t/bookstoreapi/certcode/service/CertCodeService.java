@@ -11,6 +11,7 @@ import com.t3t.bookstoreapi.member.model.constant.MemberStatus;
 import com.t3t.bookstoreapi.member.model.entity.Member;
 import com.t3t.bookstoreapi.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +20,7 @@ import java.security.SecureRandom;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@ConditionalOnProperty(name = "feature.enabled", havingValue = "true", matchIfMissing = false)
 public class CertCodeService {
     private final MemberRepository memberRepository;
     private final DoorayHookSender messageSender;

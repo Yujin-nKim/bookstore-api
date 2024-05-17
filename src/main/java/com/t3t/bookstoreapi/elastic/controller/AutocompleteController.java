@@ -3,6 +3,7 @@ package com.t3t.bookstoreapi.elastic.controller;
 import com.t3t.bookstoreapi.elastic.service.AutocompleteService;
 import com.t3t.bookstoreapi.model.response.BaseResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@ConditionalOnProperty(name = "feature.enabled", havingValue = "true", matchIfMissing = false)
 public class AutocompleteController {
     private final AutocompleteService autocompleteService;
     /**

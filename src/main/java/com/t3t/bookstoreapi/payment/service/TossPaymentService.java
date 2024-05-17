@@ -16,6 +16,7 @@ import com.t3t.bookstoreapi.payment.model.response.PaymentConfirmResponse;
 import com.t3t.bookstoreapi.payment.repository.PaymentProviderRepository;
 import com.t3t.bookstoreapi.payment.repository.TossPaymentRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +25,7 @@ import java.time.LocalDateTime;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@ConditionalOnProperty(name = "feature.enabled", havingValue = "true", matchIfMissing = false)
 public class TossPaymentService implements ProviderPaymentService {
 
     private final PaymentProviderRepository paymentProviderRepository;

@@ -2,6 +2,7 @@ package com.t3t.bookstoreapi.property;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component;
 @Profile("!local")
 @Getter
 @Component
+@ConditionalOnProperty(name = "feature.enabled", havingValue = "true", matchIfMissing = false)
 public class SecretKeyProperties {
     @Value("${t3t.secretKeyManager.secrets.databaseServerIpAddress.keyId}")
     private String databaseIpAddressKeyId;

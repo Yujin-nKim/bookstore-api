@@ -3,6 +3,7 @@ package com.t3t.bookstoreapi.config;
 import com.t3t.bookstoreapi.keymanager.service.SecretKeyManagerService;
 import com.t3t.bookstoreapi.property.SecretKeyProperties;
 import com.t3t.bookstoreapi.property.TossPaymentProperties;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -17,6 +18,7 @@ import org.springframework.context.annotation.Configuration;
 public class TossPaymentPropertiesConfig {
 
     @Bean
+    @ConditionalOnProperty(name = "feature.enabled", havingValue = "true", matchIfMissing = false)
     public TossPaymentProperties tossPaymentProperties(SecretKeyManagerService secretKeyManagerService,
                                                        SecretKeyProperties secretKeyProperties) {
         return TossPaymentProperties.builder()

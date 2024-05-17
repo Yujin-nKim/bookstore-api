@@ -28,26 +28,26 @@ public class DatabasePropertiesConfig {
      * @return DatabaseProperties
      * @author woody35545(구건모)
      */
-    @Bean
-    @Profile({"prod", "dev", "test"})
-    public DatabaseProperties dataSourceProperties(SecretKeyManagerService secretKeyManagerService,
-                                                   SecretKeyProperties secretKeyProperties,
-                                                   Environment environment) {
-
-        String activeProfile = environment.getActiveProfiles()[0];
-        String activeProfileSuffix = activeProfile.equals("prod") ? "" : "_" + activeProfile;
-
-        return DatabaseProperties.builder()
-                .databaseUrl(String.format("jdbc:mysql://%s:%s/%s%s",
-                        secretKeyManagerService.getSecretValue(secretKeyProperties.getDatabaseIpAddressKeyId()),
-                        secretKeyManagerService.getSecretValue(secretKeyProperties.getDatabasePortKeyId()),
-                        secretKeyManagerService.getSecretValue(secretKeyProperties.getDatabaseNameKeyId()),
-                        activeProfileSuffix))
-                .driverClassName("com.mysql.cj.jdbc.Driver")
-                .username(secretKeyManagerService.getSecretValue(secretKeyProperties.getDatabaseUsernameKeyId()))
-                .password(secretKeyManagerService.getSecretValue(secretKeyProperties.getDatabasePasswordKeyId()))
-                .build();
-    }
+//    @Bean
+//    @Profile({"prod", "dev", "test"})
+//    public DatabaseProperties dataSourceProperties(SecretKeyManagerService secretKeyManagerService,
+//                                                   SecretKeyProperties secretKeyProperties,
+//                                                   Environment environment) {
+//
+//        String activeProfile = environment.getActiveProfiles()[0];
+//        String activeProfileSuffix = activeProfile.equals("prod") ? "" : "_" + activeProfile;
+//
+//        return DatabaseProperties.builder()
+//                .databaseUrl(String.format("jdbc:mysql://%s:%s/%s%s",
+//                        secretKeyManagerService.getSecretValue(secretKeyProperties.getDatabaseIpAddressKeyId()),
+//                        secretKeyManagerService.getSecretValue(secretKeyProperties.getDatabasePortKeyId()),
+//                        secretKeyManagerService.getSecretValue(secretKeyProperties.getDatabaseNameKeyId()),
+//                        activeProfileSuffix))
+//                .driverClassName("com.mysql.cj.jdbc.Driver")
+//                .username(secretKeyManagerService.getSecretValue(secretKeyProperties.getDatabaseUsernameKeyId()))
+//                .password(secretKeyManagerService.getSecretValue(secretKeyProperties.getDatabasePasswordKeyId()))
+//                .build();
+//    }
 
     /**
      * local 환경에서 사용되는 DatabaseProperties Bean
@@ -55,7 +55,7 @@ public class DatabasePropertiesConfig {
      * @author woody35545(구건모)
      */
     @Bean
-    @Profile("local")
+    @Profile({"dev", "prod"})
     public DatabaseProperties localDataSourceProperties(
             @Value("${t3t.datasource.url}") String databaseUrl,
             @Value("${t3t.datasource.driverClassName}") String driverClassName,

@@ -1,6 +1,7 @@
 package com.t3t.bookstoreapi.property;
 import lombok.*;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.Resource;
@@ -13,6 +14,7 @@ import org.springframework.core.io.Resource;
 @Setter
 @Profile("!local")
 @ConfigurationProperties(prefix = "t3t.secret-key-manager")
+@ConditionalOnProperty(name = "feature.enabled", havingValue = "true", matchIfMissing = false)
 public class SecretKeyManagerProperties {
     private String appKey;
     private String password;
